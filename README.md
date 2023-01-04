@@ -1,2 +1,2 @@
 # magicdaq
-MAKinteract Lab in KAIST (Research Inturnship 2022-23 winter)
+MAKinteract Lab (Prof. Andrea Bianchi) in KAIST (Research Inturnship 2022-23 winter)
