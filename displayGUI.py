@@ -7,7 +7,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 width = 600
-height = 600
+height = 400
 
 class ExampleWidget(QWidget):
 
@@ -24,7 +24,7 @@ class ExampleWidget(QWidget):
         # define elements
         self.text1 = QLabel('Display Voltage Data', self)
         self.text1.setFont(QFont('Arial', 24))
-        self.text1.move(int(width*5/20), int(height*1/10))
+        self.text1.move(int(width*5/20), int(height*1/20))
 
         # Load voltage data
         self.loadbtn = QPushButton('Choose a Load File', self)
@@ -32,7 +32,7 @@ class ExampleWidget(QWidget):
         self.loadbtn.setGeometry(int(width*3/20), int(height*2/10),400, 40)
         self.path_text = QLabel('Load file is not defined.', self)
         self.path_text.setFont(QFont('Times', 8))
-        self.path_text.setGeometry(int(width*3/20), int(height*11/40),400,20)
+        self.path_text.setGeometry(int(width*3/20), int(height*12/40),400,20)
 
         # Configure output
         self.cb_pin0 = QCheckBox('pin0', self)
@@ -44,17 +44,17 @@ class ExampleWidget(QWidget):
         self.cb_pin1.setFont(QFont('Arial', 20))
         self.dropdownlist0.setFont(QFont('Times', 12))
         self.dropdownlist1.setFont(QFont('Times', 12))
-        self.cb_pin0.setGeometry(int(width*2/10),int(height*7/20),100,30)
-        self.cb_pin1.setGeometry(int(width*2/10),int(height*9/20),100,30)
-        self.dropdownlist0.setGeometry(int(width*4/10), int(height*7/20), 130, 30)
-        self.dropdownlist1.setGeometry(int(width*4/10), int(height*9/20), 130, 30)
+        self.cb_pin0.setGeometry(int(width*2/10),int(height*8/20),100,30)
+        self.cb_pin1.setGeometry(int(width*2/10),int(height*10/20),100,30)
+        self.dropdownlist0.setGeometry(int(width*4/10), int(height*8/20), 130, 30)
+        self.dropdownlist1.setGeometry(int(width*4/10), int(height*10/20), 130, 30)
         self.cb_pin0.toggle() # default setting
         self.dropdownlist1.setEnabled(False)
 
         # run button
         self.runbtn = QPushButton('RUN!', self)
         self.runbtn.setFont(QFont('Times', 15))
-        self.runbtn.setGeometry(int(width*3/10), int(height*6/10), 200, 40)
+        self.runbtn.setGeometry(int(width*4/10), int(height*13/20), 100, 40)
 
         # cover text(running)
         '''
@@ -66,7 +66,7 @@ class ExampleWidget(QWidget):
         # quit button
         qbtn = QPushButton('QUIT', self)
         qbtn.setFont(QFont('Times', 15))
-        qbtn.setGeometry(int(width * 3/10), int(height * 8/10), 100, 40)
+        qbtn.setGeometry(int(width * 4/10), int(height * 8/10), 100, 40)
 
 
         # Configure Connection
