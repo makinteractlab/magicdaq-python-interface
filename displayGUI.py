@@ -101,7 +101,7 @@ class ExampleWidget(QWidget):
             self.clearElement()
             with open(self.path) as f:
                 reader = csv.reader(f)
-                header = reader.__next__()  # ヘッダーの読み込み
+                header = reader.__next__()
                 self.addElement(header)
         self.ensureRun()
     
@@ -122,6 +122,7 @@ class ExampleWidget(QWidget):
     def runDisplay(self):
         self.runbtn.setEnabled(False)
 
+        # python[] display.py[0] 'path'[1] pin0(T/F)[2] pin0index[3] pin1(T/F)[4] pin1index[5]
         if self.check:
             os.system('python display.py '
                     + self.path
@@ -134,11 +135,9 @@ class ExampleWidget(QWidget):
                     + ' '
                     + str(self.dropdownlist1.currentIndex())
                     )
-        # python[] display.py[0] 'path'[1] pin0(T/F)[2] pin0index[3] pin1(T/F)[4] pin1index[5]
         self.runbtn.setEnabled(True)
     
 if __name__ == '__main__':
-
     app = QApplication(sys.argv)
     ew = ExampleWidget()    
     sys.exit(app.exec_())

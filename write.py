@@ -1,6 +1,16 @@
 from magicdaq.api_class import MagicDAQDevice
 import time
 import csv
+import sys
+
+Pins = [sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8]]
+streaming_frequency = int(sys.argv[9])
+duration = int(sys.argv[10])
+filename = sys.argv[11]
+folderPath = sys.argv[12]
+
+# Pin configure
+selected_pin = [i for i in range(0,len(Pins)) if Pins[i] == 'True']
 
 # Create daq_one object
 daq_one = MagicDAQDevice()
@@ -10,18 +20,16 @@ daq_one.open_daq_device()
 
 start = time.time()
 
-csv_log_file = open('analog_input_data.csv', 'w+', newline="")
+csv_log_file = open(folderPath+'/'+filename+'.csv', 'w+', newline="")
 csv_writer = csv.writer(csv_log_file)
-log_file_header = ['Time (Sec)', 'Analog Input 0', 'Analog Input 1', 'Analog Input 4']
+#log_file_header = ['Time (Sec)', 'Analog Input 0', 'Analog Input 1', 'Analog Input 4']
+log_file_header = ['Time (Sec)']
+for l in selected_pin:
+    log_file_header.append('Analog Input '+str(l))
 csv_writer.writerow(log_file_header)
 
-#define frequency by users
-streaming_frequency = int(input("define frequency (Hz): "))
-duration = int(input("define duration (Sec): "))
-
 #being able to input by multiple pin
-#available pin: 0, 1, 4
-daq_one.configure_analog_input_stream([0, 1, 4],streaming_frequency)
+daq_one.configure_analog_input_stream(selected_pin,streaming_frequency)
 
 print('--- Starting Test (Fast Data Acquisition) ---')
 print('Streaming Frequency (Hz): ', streaming_frequency)
