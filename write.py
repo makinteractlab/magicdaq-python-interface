@@ -53,21 +53,25 @@ print('Total Test Time (sec): ', round((time.time() - test_start_time),3) )
 
 all_streaming_data = daq_one.get_full_streaming_data_buffer()
 print('Number of data points gathered for each analog input: ', len(all_streaming_data[0]))
+print('Number of data points in each arrays: ', len(all_streaming_data))
+daq_one.close_daq_device()
 
+
+# save data into csv file
 print('Data Output in Progress...')
 data_index = 0
-while data_index < len(all_streaming_data[0]):
+while data_index < min(len(all_streaming_data[0]),len(all_streaming_data[len(selected_pin)-1])):
     # Calculate time at this data point (sec)
     time_at_data_point = round((data_index *(1/streaming_frequency)),3)
 
     # save data to CSV
     arr = [time_at_data_point]
     for i in range(len(selected_pin)):
+        #print(i, data_index)
         arr.append(all_streaming_data[i][data_index])
     csv_writer.writerow(arr)
     data_index += 1
 
-daq_one.close_daq_device()
 print('')
 print ('--- Test Complete ---')
 csv_log_file.close()

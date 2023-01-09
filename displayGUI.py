@@ -75,7 +75,8 @@ class ExampleWidget(QWidget):
         self.cb_pin1.stateChanged.connect(self.ensureList1) # change statement
         self.runbtn.clicked.connect(self.runDisplay)
         qbtn.clicked.connect(QCoreApplication.instance().quit)
-
+        
+        self.check=False
         self.runbtn.setEnabled(False)
         self.show()
     
