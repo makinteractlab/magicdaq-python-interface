@@ -60,6 +60,8 @@ daq_one.close_daq_device()
 # save data into csv file
 print('Data Output in Progress...')
 data_index = 0
+
+
 while data_index < min(len(all_streaming_data[0]),len(all_streaming_data[len(selected_pin)-1])):
     # Calculate time at this data point (sec)
     time_at_data_point = round((data_index *(1/streaming_frequency)),3)

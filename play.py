@@ -8,7 +8,7 @@ from PyQt5.QtCore import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-
+import random
 
 
 class WriteGUI(QWidget):
@@ -23,13 +23,15 @@ class WriteGUI(QWidget):
         self.move(300, 150)
         self.setWindowTitle('Measure Voltage Data')
         '''
-        width = 600
-        height = 750
+        self.width = 600
+        self.height = 750
+        width = self.width
+        height = self.height
 
         #config title
         self.title = QLabel('Measure Voltage Data', self)
-        self.title.setFont(QFont('Arial', 24))
-        self.title.move(int(width*5/20), int(height*1/20))
+        self.title.setFont(QFont('Arial', 26))
+        self.title.move(int(width*4/20), int(height*1/20))
 
         # check box configure        
         self.exp1 = QLabel('Select measured Analog Pin:', self)
@@ -53,21 +55,21 @@ class WriteGUI(QWidget):
         self.cb_pin5.setFont(cb_font)
         self.cb_pin6.setFont(cb_font)
         self.cb_pin7.setFont(cb_font)
-        self.cb_pin0.move(int(width*3/20),int(height*4/20))
-        self.cb_pin1.move(int(width*7/20),int(height*4/20))
-        self.cb_pin2.move(int(width*11/20),int(height*4/20))
-        self.cb_pin3.move(int(width*15/20),int(height*4/20))
-        self.cb_pin4.move(int(width*3/20),int(height*5/20))
-        self.cb_pin5.move(int(width*7/20),int(height*5/20))
-        self.cb_pin6.move(int(width*11/20),int(height*5/20))
-        self.cb_pin7.move(int(width*15/20),int(height*5/20))
+        self.cb_pin0.move(int(width*3/20),int(height*7/40))
+        self.cb_pin1.move(int(width*7/20),int(height*7/40))
+        self.cb_pin2.move(int(width*11/20),int(height*7/40))
+        self.cb_pin3.move(int(width*15/20),int(height*7/40))
+        self.cb_pin4.move(int(width*3/20),int(height*9/40))
+        self.cb_pin5.move(int(width*7/20),int(height*9/40))
+        self.cb_pin6.move(int(width*11/20),int(height*9/40))
+        self.cb_pin7.move(int(width*15/20),int(height*9/40))
 
         # frequency 
         self.freq_text = QLabel('Frequency(Hz):', self)
         self.freq_text.setFont(QFont('Arial', 15))
-        self.freq_text.move(int(width*3/20), int(height*7/20))
+        self.freq_text.move(int(width*3/20), int(height*6/20))
         self.freq = QComboBox(self)
-        self.freq.setGeometry(int(width*9/20), int(height*7/20), 100, 30)
+        self.freq.setGeometry(int(width*9/20), int(height*6/20), 100, 30)
         self.freq_data = [10,100,200,500,1000,2000,3000]
         for i in range(len(self.freq_data)):
             self.freq.addItem(str(self.freq_data[i]))
@@ -75,47 +77,36 @@ class WriteGUI(QWidget):
         # Time Duration
         self.time_text = QLabel('Time Duration(Sec):', self)
         self.time_text.setFont(QFont('Arial', 15))
-        self.time_text.move(int(width*3/20), int(height*8/20))
+        self.time_text.move(int(width*3/20), int(height*7/20))
         self.time = QComboBox(self)
-        self.time.setGeometry(int(width*9/20), int(height*8/20), 100, 30)
+        self.time.setGeometry(int(width*9/20), int(height*7/20), 100, 30)
         self.duration_list = [1,2,3,4,5,10]
         for i in range(len(self.duration_list)):
             self.time.addItem(str(self.duration_list[i]))
 
         # choose file location button
-        self.save_btn = QPushButton('Choose File Location (Select Folder)', self)
-        self.save_btn.setFont(QFont('Times', 15))
-        self.save_btn.setGeometry(int(width*3/20), int(height*10/20),400, 40)
+        self.load_btn = QPushButton('Choose File Location (Select Folder)', self)
+        self.load_btn.setFont(QFont('Times', 15))
+        self.load_btn.setGeometry(int(width*3/20), int(height*17/40),400, 40)
         self.path_text = QLabel('Folder Path is not defined.', self)
         self.path_text.setFont(QFont('Times', 8))
-        self.path_text.setGeometry(int(width*3/20), int(height*11/20),400,20)
+        self.path_text.setGeometry(int(width*3/20), int(height*19/40),400,20)
 
         # save file name
         self.file_name_text = QLabel('File Name (.csv):', self)
         self.file_name_text.setFont(QFont('Arial', 15))
-        self.file_name_text.move(int(width*3/20), int(height*12/20))
+        self.file_name_text.move(int(width*3/20), int(height*21/40))
         self.file_name = QLineEdit(self)
-        self.file_name.setGeometry(int(width*9/20), int(height*12/20), 220, 30)
+        self.file_name.setGeometry(int(width*9/20), int(height*21/40), 220, 30)
         
         # measure button
         self.measure_btn = QPushButton('MEASURE', self)
         self.measure_btn.setFont(QFont('Times', 27))
-        self.measure_btn.setGeometry(int(width*5/20), int(height*14/20), 280, 80)
+        self.measure_btn.setGeometry(int(width*5/20), int(height*12/20), 280, 70)
 
         # display measured data and save or not
-        '''
-        fig = Figure(figsize=(400, 200), dpi = 100)
-        self.axes = fig.add_subplot(111)
-        self.axes.plot([2,3,4],[3,6,21])
-        FigureCanvas.__init__(self, fig)
-        self.setParent(None)
-        FigureCanvas.setSizePolicy(self,
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
-        self.plot()
-        '''
-
+        self.graph_measured_data = PlotCanvas(self, width = 5, height = 4)
+        self.graph_measured_data.setGeometry(int(self.width*0/20), int(self.height*29/40), int(self.width*20/20), int(self.height*5/20))
         self.save_btn = QPushButton('Save', self)
         self.save_btn.setFont(QFont('Times', 20))
         self.save_btn.setGeometry(int(width*3/20), int(height*20/20), 150, 55)
@@ -135,25 +126,17 @@ class WriteGUI(QWidget):
         self.cb_pin6.stateChanged.connect(self.ensureMeasure) 
         self.cb_pin7.stateChanged.connect(self.ensureMeasure)
 
-        
 
         self.freq.currentIndexChanged.connect(self.ensureMeasure)
         self.time.currentIndexChanged.connect(self.ensureMeasure)
         self.file_name.textChanged.connect(self.ensureMeasure)
-        self.save_btn.clicked.connect(self.fetchFolder)
+        self.load_btn.clicked.connect(self.fetchFolder)
         self.measure_btn.clicked.connect(self.runMeasure)
 
         self.file_name.setEnabled(False)
         self.measure_btn.setEnabled(False)
         self.path = None
-
-    def plot(self):
-        data = [random.random() for i in range(25)]
-        ax = self.figure.add_subplot(111)
-        ax.plot(data, 'r-')
-        ax.set_title('PyQt Matplotlib Example')
-        self.draw()
-
+        
 
     def fetchFolder(self):
         self.path = QFileDialog.getExistingDirectory(self)
@@ -205,7 +188,41 @@ class WriteGUI(QWidget):
                 + ' '
                 + self.path
                 )
-        self.measure_btn.setEnabled(True)
+        # self.measure_btn.setEnabled(True)
+        PlotCanvas.changeData()
+
+
+
+class PlotCanvas(FigureCanvas):
+
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+
+        FigureCanvas.__init__(self, fig)
+        self.setParent(parent)
+
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.plot(True)
+
+    def plot(self, check):
+        if(check):
+            time_data = [1,2,3]
+            voltage_data =  [2,3,4]
+            self.ax = self.figure.add_subplot(111)
+            self.ax.plot(time_data, voltage_data)
+            self.ax.set_title('PyQt Matplotlib Example')
+            self.draw()
+        else:
+            time_data = [3,4,5]
+            voltage_data = [1,4,2]
+            self.ax.clear()
+            self.ax.plot(time_data, voltage_data)
+
+    def changeData(self):
+        self.plot(False)####################
 
 
 class DisplayGUI(QWidget):
@@ -220,13 +237,15 @@ class DisplayGUI(QWidget):
         self.move(1000, 200)
         self.setWindowTitle('Display Voltage Data')
         '''
-        width= 600
-        height= 750
+        self.width = 600
+        self.height = 750
+        width = self.width
+        height = self.height
 
         # define elements
         self.text1 = QLabel('Display Voltage Data', self)
-        self.text1.setFont(QFont('Arial', 24))
-        self.text1.move(int(width*5/20), int(height*1/20))
+        self.text1.setFont(QFont('Arial', 26))
+        self.text1.move(int(width*4/20), int(height*1/20))
 
         # Load voltage data
         self.loadbtn = QPushButton('Choose a Load File', self)
@@ -234,24 +253,56 @@ class DisplayGUI(QWidget):
         self.loadbtn.setGeometry(int(width*3/20), int(height*2/10),400, 40)
         self.path_text = QLabel('Load file is not defined.', self)
         self.path_text.setFont(QFont('Times', 8))
-        self.path_text.setGeometry(int(width*3/20), int(height*12/40),400,20)
+        self.path_text.setGeometry(int(width*3/20), int(height*10/40),400,20)
 
         # Configure output
         self.cb_pin0 = QCheckBox('pin0', self)
         self.cb_pin1 = QCheckBox('pin1', self)
-        self.dropdownlist0 = QComboBox(self)
-        self.dropdownlist1 = QComboBox(self)
-        
-        self.cb_pin0.setFont(QFont('Arial', 20))
-        self.cb_pin1.setFont(QFont('Arial', 20))
-        self.dropdownlist0.setFont(QFont('Times', 12))
-        self.dropdownlist1.setFont(QFont('Times', 12))
-        self.cb_pin0.setGeometry(int(width*2/10),int(height*8/20),100,30)
-        self.cb_pin1.setGeometry(int(width*2/10),int(height*10/20),100,30)
-        self.dropdownlist0.setGeometry(int(width*4/10), int(height*8/20), 130, 30)
-        self.dropdownlist1.setGeometry(int(width*4/10), int(height*10/20), 130, 30)
+        self.cb_pin0.setGeometry(int(width*1/10),int(height*7/20),100,30)
+        self.cb_pin1.setGeometry(int(width*1/10),int(height*11/20),100,30)
+        self.setStyleSheet("""
+            QCheckBox{
+                font-family: 'Arial';
+                font-size: 30px;
+            }
+            QCheckBox::indicator {
+                width: 20px;
+                height: 20px;
+            }
+        """)
         self.cb_pin0.toggle() # default setting
-        self.dropdownlist1.setEnabled(False)
+
+
+        self.pin0_listA = QComboBox(self)
+        self.pin0_listB = QComboBox(self)
+        self.pin0_symbol = QComboBox(self)
+        self.pin0_filter = QComboBox(self)
+        self.pin1_listA = QComboBox(self)
+        self.pin1_listB = QComboBox(self)
+        self.pin1_symbol = QComboBox(self)
+        self.pin1_filter = QComboBox(self)
+        
+
+        self.pin0_listA.setFont(QFont('Arial', 12))
+        self.pin0_listB.setFont(QFont('Arial', 12))
+        self.pin0_symbol.setFont(QFont('Arial', 12))
+        self.pin0_filter.setFont(QFont('Arial', 12))
+        self.pin1_listA.setFont(QFont('Arial', 12))
+        self.pin1_listB.setFont(QFont('Arial', 12))
+        self.pin1_symbol.setFont(QFont('Arial', 12))
+        self.pin1_filter.setFont(QFont('Arial', 12))
+
+        
+        self.pin0_listA.setGeometry(int(width*6/20), int(height*7/20), 120, 40)
+        self.pin0_listB.setGeometry(int(width*14/20), int(height*7/20), 120, 40)
+        self.pin0_symbol.setGeometry(int(width*10/20), int(height*7/20), 50, 40)
+        self.pin0_filter.setGeometry(int(width*2/10), int(height*9/20), 130, 40)
+        self.pin1_listA.setGeometry(int(width*4/10), int(height*10/20), 130, 40)
+        self.pin1_listB.setGeometry(int(width*6/10), int(height*9/20), 130, 40)
+        self.pin1_symbol.setGeometry(int(width*2/10), int(height*9/20), 130, 40)
+        self.pin1_filter.setGeometry(int(width*2/10), int(height*9/20), 130, 40)
+
+        self.pin1_listA.setEnabled(False)
 
         # run button
         self.runbtn = QPushButton('RUN!', self)
@@ -282,11 +333,11 @@ class DisplayGUI(QWidget):
     
     def addElement(self, header):
         for i in range(1, len(header)):
-            self.dropdownlist0.addItem(header[i])
+            self.pin0_listA.addItem(header[i])
             self.dropdownlist1.addItem(header[i])
 
     def clearElement(self):
-        self.dropdownlist0.clear()
+        self.pin0_listA.clear()
         self.dropdownlist1.clear()
     
     def fetchFile(self):
@@ -302,9 +353,9 @@ class DisplayGUI(QWidget):
     
     def ensureList0(self, state):
         if state == Qt.Checked:
-            self.dropdownlist0.setEnabled(True)
+            self.pin0_listA.setEnabled(True)
         else:
-            self.dropdownlist0.setEnabled(False)
+            self.pin0_listA.setEnabled(False)
         self.ensureRun()
 
     def ensureList1(self, state):
@@ -324,7 +375,7 @@ class DisplayGUI(QWidget):
                     + ' '
                     + str(self.cb_pin0.isChecked())
                     + ' '
-                    + str(self.dropdownlist0.currentIndex())
+                    + str(self.pin0_listA.currentIndex())
                     + ' '
                     + str(self.cb_pin1.isChecked())
                     + ' '
