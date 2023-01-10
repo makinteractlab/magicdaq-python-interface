@@ -256,10 +256,11 @@ class DisplayGUI(QWidget):
         self.path_text.setGeometry(int(width*3/20), int(height*10/40),400,20)
 
         # Configure output
+        diff = int(height*9/40)
         self.cb_pin0 = QCheckBox('pin0', self)
         self.cb_pin1 = QCheckBox('pin1', self)
         self.cb_pin0.setGeometry(int(width*1/10),int(height*7/20),100,30)
-        self.cb_pin1.setGeometry(int(width*1/10),int(height*11/20),100,30)
+        self.cb_pin1.setGeometry(int(width*1/10),int(height*7/20)+diff,100,30)
         self.setStyleSheet("""
             QCheckBox{
                 font-family: 'Arial';
@@ -277,37 +278,73 @@ class DisplayGUI(QWidget):
         self.pin0_listB = QComboBox(self)
         self.pin0_symbol = QComboBox(self)
         self.pin0_filter = QComboBox(self)
+        self.pin0_symbol_text = QLabel('Option', self)
+        self.pin0_filter_text = QLabel('Filter:',self)
         self.pin1_listA = QComboBox(self)
         self.pin1_listB = QComboBox(self)
         self.pin1_symbol = QComboBox(self)
         self.pin1_filter = QComboBox(self)
-        
+        self.pin1_symbol_text = QLabel('Option', self)
+        self.pin1_filter_text = QLabel('Filter:',self)
 
         self.pin0_listA.setFont(QFont('Arial', 12))
         self.pin0_listB.setFont(QFont('Arial', 12))
-        self.pin0_symbol.setFont(QFont('Arial', 12))
+        self.pin0_symbol.setFont(QFont('Arial', 15))
         self.pin0_filter.setFont(QFont('Arial', 12))
+        self.pin0_symbol_text.setFont(QFont('Arial', 15))
+        self.pin0_filter_text.setFont(QFont('Arial', 18))
         self.pin1_listA.setFont(QFont('Arial', 12))
         self.pin1_listB.setFont(QFont('Arial', 12))
-        self.pin1_symbol.setFont(QFont('Arial', 12))
+        self.pin1_symbol.setFont(QFont('Arial', 15))
         self.pin1_filter.setFont(QFont('Arial', 12))
+        self.pin1_symbol_text.setFont(QFont('Arial', 15))
+        self.pin1_filter_text.setFont(QFont('Arial', 18))
+        
+        self.pin0_listA.setGeometry(int(width*11/40), int(height*7/20), 130, 40)
+        self.pin0_listB.setGeometry(int(width*51/80), int(height*7/20), 130, 40)
+        self.pin0_symbol.setGeometry(int(width*21/40), int(height*7/20), 50, 40)
+        self.pin0_filter.setGeometry(int(width*11/40), int(height*35/80), 180, 40)
+        self.pin0_symbol_text.move(int(width*83/160), int(height*25/80))
+        self.pin0_filter_text.move(int(width*3/20), int(height*9/20))
+
+        self.pin1_listA.setGeometry(int(width*11/40), int(height*7/20)+diff, 130, 40)
+        self.pin1_listB.setGeometry(int(width*51/80), int(height*7/20)+diff, 130, 40)
+        self.pin1_symbol.setGeometry(int(width*21/40), int(height*7/20)+diff, 50, 40)
+        self.pin1_filter.setGeometry(int(width*11/40), int(height*35/80)+diff, 180, 40)
+        self.pin1_symbol_text.move(int(width*83/160), int(height*25/80)+diff)
+        self.pin1_filter_text.move(int(width*3/20), int(height*9/20)+diff)
+
+        self.pin0_symbol.addItem('N')
+        self.pin0_symbol.addItem('+')
+        self.pin0_symbol.addItem('-')
+        self.pin0_symbol.addItem('x')
+        self.pin1_symbol.addItem('N')
+        self.pin1_symbol.addItem('+')
+        self.pin1_symbol.addItem('-')
+        self.pin1_symbol.addItem('x')
+        self.pin0_filter.addItem('None')
+        self.pin0_filter.addItem('Low Pass Filter')
+        self.pin0_filter.addItem('High Pass Filter')
+        self.pin1_filter.addItem('None')
+        self.pin1_filter.addItem('Low Pass Filter')
+        self.pin1_filter.addItem('High Pass Filter')
+
+        self.pin0_listA.setEnabled(False)
+        self.pin0_listB.setEnabled(False)
+        self.pin0_filter.setEnabled(False)
+        self.pin0_symbol.setEnabled(False)
+        self.pin1_listA.setEnabled(False)
+        self.pin1_listB.setEnabled(False)
+        self.pin1_filter.setEnabled(False)
+        self.pin1_symbol.setEnabled(False)
 
         
-        self.pin0_listA.setGeometry(int(width*6/20), int(height*7/20), 120, 40)
-        self.pin0_listB.setGeometry(int(width*14/20), int(height*7/20), 120, 40)
-        self.pin0_symbol.setGeometry(int(width*10/20), int(height*7/20), 50, 40)
-        self.pin0_filter.setGeometry(int(width*2/10), int(height*9/20), 130, 40)
-        self.pin1_listA.setGeometry(int(width*4/10), int(height*10/20), 130, 40)
-        self.pin1_listB.setGeometry(int(width*6/10), int(height*9/20), 130, 40)
-        self.pin1_symbol.setGeometry(int(width*2/10), int(height*9/20), 130, 40)
-        self.pin1_filter.setGeometry(int(width*2/10), int(height*9/20), 130, 40)
-
-        self.pin1_listA.setEnabled(False)
 
         # run button
-        self.runbtn = QPushButton('RUN!', self)
-        self.runbtn.setFont(QFont('Times', 15))
-        self.runbtn.setGeometry(int(width*4/10), int(height*13/20), 100, 40)
+        self.display_btn = QPushButton('DISPLAY', self)
+        self.display_btn.setFont(QFont('Times', 27))
+        self.display_btn.setGeometry(int(width*5/20), int(height*16/20), 280, 70)
+
 
         # cover text(running)
         '''
@@ -320,25 +357,40 @@ class DisplayGUI(QWidget):
         self.loadbtn.clicked.connect(self.fetchFile)
         self.cb_pin0.stateChanged.connect(self.ensureList0) # change statement
         self.cb_pin1.stateChanged.connect(self.ensureList1) # change statement
-        self.runbtn.clicked.connect(self.runDisplay)
+        self.pin0_symbol.currentIndexChanged.connect(self.ensureSymbol0)
+        self.pin1_symbol.currentIndexChanged.connect(self.ensureSymbol1)
+
+
+        self.display_btn.clicked.connect(self.runDisplay)
         
         self.check=False
-        self.runbtn.setEnabled(False)
+        self.display_btn.setEnabled(False)
     
+    def openCheckBox(self):
+        self.pin0_listA.setEnabled(True)
+        self.pin0_filter.setEnabled(True)
+        self.pin0_symbol.setEnabled(True)
+        self.pin1_listA.setEnabled(True)
+        self.pin1_filter.setEnabled(True)
+        self.pin1_symbol.setEnabled(True)
+
+
     def ensureRun(self):
         if (self.cb_pin0.isChecked() == True or self.cb_pin1.isChecked() == True) and self.check:
-            self.runbtn.setEnabled(True)
+            self.display_btn.setEnabled(True)
         else :
-            self.runbtn.setEnabled(False)
+            self.display_btn.setEnabled(False)
     
     def addElement(self, header):
         for i in range(1, len(header)):
-            self.pin0_listA.addItem(header[i])
-            self.dropdownlist1.addItem(header[i])
+            self.pin0_listA.addItem(header[i]) 
+            self.pin0_listB.addItem(header[i])
+            self.pin1_listA.addItem(header[i])
+            self.pin1_listB.addItem(header[i])
 
     def clearElement(self):
         self.pin0_listA.clear()
-        self.dropdownlist1.clear()
+        self.pin1_listA.clear()
     
     def fetchFile(self):
         self.path, self.check = QFileDialog.getOpenFileName(None,"Choose a load file","","CSV Files (*.csv);;Text Files (*.txt)")
@@ -349,24 +401,49 @@ class DisplayGUI(QWidget):
                 reader = csv.reader(f)
                 header = reader.__next__()
                 self.addElement(header)
+        self.openCheckBox()
         self.ensureRun()
     
     def ensureList0(self, state):
         if state == Qt.Checked:
             self.pin0_listA.setEnabled(True)
+            self.pin0_listB.setEnabled(True)
+            self.pin0_filter.setEnabled(True)
+            self.pin0_symbol.setEnabled(True)
         else:
             self.pin0_listA.setEnabled(False)
+            self.pin0_listB.setEnabled(False)
+            self.pin0_filter.setEnabled(False)
+            self.pin0_symbol.setEnabled(False)
         self.ensureRun()
 
     def ensureList1(self, state):
         if state == Qt.Checked:
-            self.dropdownlist1.setEnabled(True)
+            self.pin1_listA.setEnabled(True)
+            self.pin1_listB.setEnabled(True)
+            self.pin1_filter.setEnabled(True)
+            self.pin1_symbol.setEnabled(True)
         else:
-            self.dropdownlist1.setEnabled(False)
+            self.pin1_listA.setEnabled(False)
+            self.pin1_listB.setEnabled(False)
+            self.pin1_filter.setEnabled(False)
+            self.pin1_symbol.setEnabled(False)
         self.ensureRun()
 
+    def ensureSymbol0(self, state):
+        if state != 0:
+            self.pin0_listB.setEnabled(True)
+        else :
+            self.pin0_listB.setEnabled(False)
+        
+    def ensureSymbol1(self, state):
+        if state != 0:
+            self.pin1_listB.setEnabled(True)
+        else :
+            self.pin1_listB.setEnabled(False)
+
     def runDisplay(self):
-        self.runbtn.setEnabled(False)
+        self.display_btn.setEnabled(False)
 
         # python[] display.py[0] 'path'[1] pin0(T/F)[2] pin0index[3] pin1(T/F)[4] pin1index[5]
         if self.check:
@@ -379,9 +456,9 @@ class DisplayGUI(QWidget):
                     + ' '
                     + str(self.cb_pin1.isChecked())
                     + ' '
-                    + str(self.dropdownlist1.currentIndex())
+                    + str(self.pin1_listA.currentIndex())
                     )
-        self.runbtn.setEnabled(True)
+        self.display_btn.setEnabled(True)
 
 class MainGUI(QWidget):
     def __init__(self):
@@ -404,7 +481,7 @@ class MainGUI(QWidget):
         self.setLayout(vbox)
     
         self.setWindowTitle("Easy M&D")
-        self.setGeometry(200,100,600,900)
+        self.setGeometry(100,100,600,900)
         self.show()
 
 
