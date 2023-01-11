@@ -8,7 +8,6 @@ from PyQt5.QtCore import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-import random
 
 
 class WriteGUI(QWidget):
@@ -189,7 +188,7 @@ class WriteGUI(QWidget):
                 + self.path
                 )
         # self.measure_btn.setEnabled(True)
-        PlotCanvas.changeData()
+        # PlotCanvas.changeData()
 
 
 
@@ -220,9 +219,6 @@ class PlotCanvas(FigureCanvas):
             voltage_data = [1,4,2]
             self.ax.clear()
             self.ax.plot(time_data, voltage_data)
-
-    def changeData(self):
-        self.plot(False)####################
 
 
 class DisplayGUI(QWidget):
@@ -271,7 +267,8 @@ class DisplayGUI(QWidget):
                 height: 20px;
             }
         """)
-        self.cb_pin0.toggle() # default setting
+        self.cb_pin0.setEnabled(False)
+        self.cb_pin1.setEnabled(False)
 
 
         self.pin0_listA = QComboBox(self)
@@ -338,12 +335,18 @@ class DisplayGUI(QWidget):
         self.pin1_filter.setEnabled(False)
         self.pin1_symbol.setEnabled(False)
 
+
+        # explanation of option
+        self.option_exp = QLabel('Option -> N:none(simple pin, default),  +: Addition(a + b),\n               -: Subtraction(a - b),  x: Multiplication(a x b)', self)
+        self.option_exp.setFont(QFont('Arial', 10))
+        self.option_exp.move(int(width*4/20), int(height*15/20))
+
         
 
         # run button
         self.display_btn = QPushButton('DISPLAY', self)
         self.display_btn.setFont(QFont('Times', 27))
-        self.display_btn.setGeometry(int(width*5/20), int(height*16/20), 280, 70)
+        self.display_btn.setGeometry(int(width*5/20), int(height*17/20), 280, 70)
 
 
         # cover text(running)
@@ -367,12 +370,8 @@ class DisplayGUI(QWidget):
         self.display_btn.setEnabled(False)
     
     def openCheckBox(self):
-        self.pin0_listA.setEnabled(True)
-        self.pin0_filter.setEnabled(True)
-        self.pin0_symbol.setEnabled(True)
-        self.pin1_listA.setEnabled(True)
-        self.pin1_filter.setEnabled(True)
-        self.pin1_symbol.setEnabled(True)
+        self.cb_pin0.setEnabled(True)
+        self.cb_pin1.setEnabled(True)
 
 
     def ensureRun(self):
@@ -407,9 +406,11 @@ class DisplayGUI(QWidget):
     def ensureList0(self, state):
         if state == Qt.Checked:
             self.pin0_listA.setEnabled(True)
-            self.pin0_listB.setEnabled(True)
             self.pin0_filter.setEnabled(True)
             self.pin0_symbol.setEnabled(True)
+            if self.pin0_symbol.currentIndex() != 0:
+                self.pin0_listB.setEnabled(True)
+
         else:
             self.pin0_listA.setEnabled(False)
             self.pin0_listB.setEnabled(False)
@@ -420,9 +421,10 @@ class DisplayGUI(QWidget):
     def ensureList1(self, state):
         if state == Qt.Checked:
             self.pin1_listA.setEnabled(True)
-            self.pin1_listB.setEnabled(True)
             self.pin1_filter.setEnabled(True)
             self.pin1_symbol.setEnabled(True)
+            if self.pin1_symbol.currentIndex() != 0:
+                self.pin1_listB.setEnabled(True)
         else:
             self.pin1_listA.setEnabled(False)
             self.pin1_listB.setEnabled(False)
@@ -445,18 +447,25 @@ class DisplayGUI(QWidget):
     def runDisplay(self):
         self.display_btn.setEnabled(False)
 
-        # python[] display.py[0] 'path'[1] pin0(T/F)[2] pin0index[3] pin1(T/F)[4] pin1index[5]
+        ''' python[] display.py[0] 'path'[1] 
+            pin0(T/F)[2] pin0Aindex[3] pin0symbolIndex[4] pin0Bindex[5] pin0filterIndex[6]
+            pin1(T/F)[7] pin1Aindex[8] pin1symbolIndex[9] pin1Bindex[10] pin1filterIndex[11]'''
+
         if self.check:
             os.system('python display.py '
                     + self.path
                     + ' '
-                    + str(self.cb_pin0.isChecked())
+                    + str(self.cb_pin0.isChecked()) + ' '
+                    + str(self.pin0_listA.currentIndex()) + ' '
+                    + str(self.pin0_symbol.currentIndex()) + ' '
+                    + str(self.pin0_listB.currentIndex()) + ' '
+                    + str(self.pin0_filter.currentIndex())
                     + ' '
-                    + str(self.pin0_listA.currentIndex())
-                    + ' '
-                    + str(self.cb_pin1.isChecked())
-                    + ' '
-                    + str(self.pin1_listA.currentIndex())
+                    + str(self.cb_pin1.isChecked()) + ' '
+                    + str(self.pin1_listA.currentIndex()) + ' '
+                    + str(self.pin1_symbol.currentIndex()) + ' '
+                    + str(self.pin1_listB.currentIndex()) + ' '
+                    + str(self.pin1_filter.currentIndex())
                     )
         self.display_btn.setEnabled(True)
 
