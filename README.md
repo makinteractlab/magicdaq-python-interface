@@ -52,3 +52,6 @@ Finally, set the filter settings. You can apply a filter to the measured data to
 (Note: If you use filter and the minimum value of voltage is less than 0[V], adjust all data so that the minimum value of the data is 0[V]. If you use filter and the maximum value of data is more than 5[V], adjust the range of voltages in the data to be 0[V] to 5[V])
 
 After making the above settings, the 'DISPLAY' button can be pressed. You can check the result immediately after clicking. (If the amount of data is large, it may take some time to compile.)
+
+## Remarks
+This project was held in [MAKinteract Lab](https://makinteract.kaist.ac.kr/) (Research Internship of TokyoTech, winter in 2022-2023)
