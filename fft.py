@@ -31,18 +31,7 @@ def butter_lowpass_filter(x, lowcut, fs, order=4):
     b, a = butter_lowpass(lowcut, fs, order=order)
     y = signal.filtfilt(b, a, x)
     return y
-'''
-N = 1024            # サンプル数
-dt = 0.0005          # サンプリング周期 [s]
-fs = 1 / dt         # サンプリング周波数 [Hz]
-f1, f2, f3 = 30, 432, 604    # サンプルデータの周波数 [Hz]
 
-t = np.arange(0, N * dt, dt) # 時間 [s]
-x = 1.5 * np.sin(2 * np.pi * f1 * t) \
-    + 0.5 * np.sin(2 * np.pi * f2 * t) \
-    + 0.7 * np.sin(2 * np.pi * f3 * t) # データ
-print(x)
-'''
 with open('./assets/20Hz.csv') as f:
     reader = csv.reader(f)
     arr = [row for row in reader]

@@ -8,7 +8,8 @@ from PyQt5.QtCore import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-
+import numpy as np
+import time, datetime
 
 class WriteGUI(QWidget):
 
@@ -101,19 +102,21 @@ class WriteGUI(QWidget):
         # measure button
         self.measure_btn = QPushButton('MEASURE', self)
         self.measure_btn.setFont(QFont('Times', 27))
-        self.measure_btn.setGeometry(int(width*5/20), int(height*12/20), 280, 70)
+        self.measure_btn.setGeometry(int(width*5/20), int(height*12/20), int(width*9/20), 70)
 
         # display measured data and save or not
-        self.graph_measured_data = PlotCanvas(self, width = 5, height = 4)
-        self.graph_measured_data.setGeometry(int(self.width*0/20), int(self.height*29/40), int(self.width*20/20), int(self.height*5/20))
+        self.view_graph = QPushButton('View Graph', self)
+        self.view_graph.setGeometry(int(self.width*5/20), int(self.height*29/40), int(self.width*9/20), int(self.height*2/20))
+        self.view_graph.setFont(QFont('Arial', 24))
         self.save_btn = QPushButton('Save', self)
         self.save_btn.setFont(QFont('Times', 20))
-        self.save_btn.setGeometry(int(width*3/20), int(height*20/20), 150, 55)
-
+        self.save_btn.setGeometry(int(width*3/20), int(height*35/40), 150, 55)
         self.dismiss_btn = QPushButton('Dismiss', self)
         self.dismiss_btn.setFont(QFont('Times', 20))
-        self.dismiss_btn.setGeometry(int(width*11/20), int(height*20/20), 150, 55)
-
+        self.dismiss_btn.setGeometry(int(width*11/20), int(height*35/40), 150, 55)
+        self.view_graph.setEnabled(False)
+        self.save_btn.setEnabled(False)
+        self.dismiss_btn.setEnabled(False)
 
         # Configure Connection
         self.cb_pin0.stateChanged.connect(self.ensureMeasure) 
@@ -131,6 +134,9 @@ class WriteGUI(QWidget):
         self.file_name.textChanged.connect(self.ensureMeasure)
         self.load_btn.clicked.connect(self.fetchFolder)
         self.measure_btn.clicked.connect(self.runMeasure)
+        self.view_graph.clicked.connect(self.plotGraph)
+        self.save_btn.clicked.connect(self.saveData)
+        self.dismiss_btn.clicked.connect(self.dismissData)
 
         self.file_name.setEnabled(False)
         self.measure_btn.setEnabled(False)
@@ -160,6 +166,43 @@ class WriteGUI(QWidget):
         else :
             self.measure_btn.setEnabled(False)
 
+    def plotGraph(self):
+        with open(self.path+'/' + self.file_name.text() + self.date + '.csv') as f:
+            reader = csv.reader(f)
+            header = next(reader)
+            arr = [row for row in reader]
+        data = np.array(np.array(arr)[1:, :]).T
+        '''data: [[time0, time1, ...], [data0_0, data0_1, ...], ...]'''
+
+        col = ["black", "blue", "red", "green", "purple", "yellow", "brown", "pink"]
+        time = data[0].astype(np.float32)
+        fig, ax = plt.subplots()
+        ax.set_xlabel("Time [s]")
+        ax.set_ylabel("Voltage[V]")
+        ax.set_title('Measured Voltage Data')
+        ax.set_xlim([0, float(data[0][-1])])
+        ax.set_ylim([0, 5])
+        ax.grid()
+        for i in range(1,len(data)):
+            ax.plot(time, data[i].astype(np.float32), color=col[i-1], label=header[i])
+        ax.legend(loc=0)
+        fig.tight_layout()
+        plt.show()
+
+    def saveData(self):
+        self.measure_btn.setEnabled(True)
+        self.view_graph.setEnabled(False)
+        self.save_btn.setEnabled(False)
+        self.dismiss_btn.setEnabled(False)
+
+    def dismissData(self):
+        self.measure_btn.setEnabled(True)
+        self.view_graph.setEnabled(False)
+        self.save_btn.setEnabled(False)
+        self.dismiss_btn.setEnabled(False)
+        # delete data 
+        os.remove(self.path+'/' + self.file_name.text() + self.date + '.csv')
+
     def runMeasure(self):
         Pins = [self.cb_pin0.isChecked(),
                 self.cb_pin1.isChecked(),
@@ -173,9 +216,13 @@ class WriteGUI(QWidget):
         
         frequency = self.freq_data[self.freq.currentIndex()]
         duration = self.duration_list[self.time.currentIndex()]
+        # Attach the creation time to the path name
+        self.now = datetime.datetime.fromtimestamp(time.time())
+        self.date = self.now.strftime("-%Y-%m-%d-%H-%M-%S")
+
 
         self.measure_btn.setEnabled(False)
-        # python[] write.py[0] Pins(array)[1-8] Frequency[9] duration[10] filename[11] folder path[12]
+        # python[] write.py[0] Pins(array)[1-8] Frequency[9] duration[10] filename[11] folder path[12] now[13]
         os.system('python write.py '
                 + Pins[0]+' '+Pins[1]+' '+Pins[2]+' '+Pins[3]+' '+Pins[4]+' '+Pins[5]+' '+Pins[6]+' '+Pins[7]+' '
                 + ' '
@@ -186,39 +233,13 @@ class WriteGUI(QWidget):
                 + self.file_name.text()
                 + ' '
                 + self.path
+                + ' '
+                + self.date
                 )
-        # self.measure_btn.setEnabled(True)
-        # PlotCanvas.changeData()
-
-
-
-class PlotCanvas(FigureCanvas):
-
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-
-        FigureCanvas.__init__(self, fig)
-        self.setParent(parent)
-
-        FigureCanvas.setSizePolicy(self,
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
-        self.plot(True)
-
-    def plot(self, check):
-        if(check):
-            time_data = [1,2,3]
-            voltage_data =  [2,3,4]
-            self.ax = self.figure.add_subplot(111)
-            self.ax.plot(time_data, voltage_data)
-            self.ax.set_title('PyQt Matplotlib Example')
-            self.draw()
-        else:
-            time_data = [3,4,5]
-            voltage_data = [1,4,2]
-            self.ax.clear()
-            self.ax.plot(time_data, voltage_data)
+        self.measure_btn.setEnabled(False)
+        self.view_graph.setEnabled(True)
+        self.save_btn.setEnabled(True)
+        self.dismiss_btn.setEnabled(True)
 
 
 class DisplayGUI(QWidget):
@@ -246,10 +267,15 @@ class DisplayGUI(QWidget):
         # Load voltage data
         self.loadbtn = QPushButton('Choose a Load File', self)
         self.loadbtn.setFont(QFont('Times', 15))
-        self.loadbtn.setGeometry(int(width*3/20), int(height*2/10),400, 40)
+        self.loadbtn.setGeometry(int(width*3/20), int(height*3/20),400, 40)
         self.path_text = QLabel('Load file is not defined.', self)
-        self.path_text.setFont(QFont('Times', 8))
-        self.path_text.setGeometry(int(width*3/20), int(height*10/40),400,20)
+        self.path_text.setFont(QFont('Times', 8, QFont.Bold))
+        self.path_text.setGeometry(int(width*3/20), int(height*8/40),400,20)
+
+        # explanation of option
+        self.option_exp = QLabel('Option -> N:none(simple pin, default),  +: Addition(a + b),\n               -: Subtraction(a - b),  x: Multiplication(a x b)', self)
+        self.option_exp.setFont(QFont('Arial', 10, QFont.Bold))
+        self.option_exp.move(int(width*4/20), int(height*5/20))
 
         # Configure output
         diff = int(height*9/40)
@@ -288,27 +314,27 @@ class DisplayGUI(QWidget):
         self.pin0_listB.setFont(QFont('Arial', 12))
         self.pin0_symbol.setFont(QFont('Arial', 15))
         self.pin0_filter.setFont(QFont('Arial', 12))
-        self.pin0_symbol_text.setFont(QFont('Arial', 15))
+        self.pin0_symbol_text.setFont(QFont('Arial', 12))
         self.pin0_filter_text.setFont(QFont('Arial', 18))
         self.pin1_listA.setFont(QFont('Arial', 12))
         self.pin1_listB.setFont(QFont('Arial', 12))
         self.pin1_symbol.setFont(QFont('Arial', 15))
         self.pin1_filter.setFont(QFont('Arial', 12))
-        self.pin1_symbol_text.setFont(QFont('Arial', 15))
+        self.pin1_symbol_text.setFont(QFont('Arial', 12))
         self.pin1_filter_text.setFont(QFont('Arial', 18))
         
         self.pin0_listA.setGeometry(int(width*11/40), int(height*7/20), 130, 40)
         self.pin0_listB.setGeometry(int(width*51/80), int(height*7/20), 130, 40)
         self.pin0_symbol.setGeometry(int(width*21/40), int(height*7/20), 50, 40)
         self.pin0_filter.setGeometry(int(width*11/40), int(height*35/80), 180, 40)
-        self.pin0_symbol_text.move(int(width*83/160), int(height*25/80))
+        self.pin0_symbol_text.move(int(width*84/160), int(height*51/160))
         self.pin0_filter_text.move(int(width*3/20), int(height*9/20))
 
         self.pin1_listA.setGeometry(int(width*11/40), int(height*7/20)+diff, 130, 40)
         self.pin1_listB.setGeometry(int(width*51/80), int(height*7/20)+diff, 130, 40)
         self.pin1_symbol.setGeometry(int(width*21/40), int(height*7/20)+diff, 50, 40)
         self.pin1_filter.setGeometry(int(width*11/40), int(height*35/80)+diff, 180, 40)
-        self.pin1_symbol_text.move(int(width*83/160), int(height*25/80)+diff)
+        self.pin1_symbol_text.move(int(width*84/160), int(height*51/160)+diff)
         self.pin1_filter_text.move(int(width*3/20), int(height*9/20)+diff)
 
         self.pin0_symbol.addItem('N')
@@ -335,18 +361,21 @@ class DisplayGUI(QWidget):
         self.pin1_filter.setEnabled(False)
         self.pin1_symbol.setEnabled(False)
 
+        # Caution text
+        self.caution_title = QLabel('Caution', self)
+        self.caution_text = QLabel('If you use filter and the minimum value of voltage is less than 0[V],\n   adjust all data so that the minimum value of the data is 0[V].\nIf you use filter and the maximum value of data is more than 5[V],\n   adjust the range of voltages in the data to be 0[V] to 5[V]',self)
+        self.caution_title.setFont(QFont('Arial', 20, QFont.Bold))
+        self.caution_title.setStyleSheet("color: red")
+        self.caution_text.setFont(QFont('Arial', 8, QFont.Bold))
+        self.caution_title.move(int(width*2/20), int(height*15/20))
+        self.caution_text.move(int(width*3/20), int(height*16/20))
 
-        # explanation of option
-        self.option_exp = QLabel('Option -> N:none(simple pin, default),  +: Addition(a + b),\n               -: Subtraction(a - b),  x: Multiplication(a x b)', self)
-        self.option_exp.setFont(QFont('Arial', 10))
-        self.option_exp.move(int(width*4/20), int(height*15/20))
 
         
-
         # run button
         self.display_btn = QPushButton('DISPLAY', self)
         self.display_btn.setFont(QFont('Times', 27))
-        self.display_btn.setGeometry(int(width*5/20), int(height*17/20), 280, 70)
+        self.display_btn.setGeometry(int(width*5/20), int(height*18/20), 280, 70)
 
 
         # cover text(running)
@@ -490,7 +519,7 @@ class MainGUI(QWidget):
         self.setLayout(vbox)
     
         self.setWindowTitle("Easy M&D")
-        self.setGeometry(100,100,600,900)
+        self.setGeometry(100,100,600,800)
         self.show()
 
 

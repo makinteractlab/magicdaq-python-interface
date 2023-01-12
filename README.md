@@ -1,4 +1,4 @@
-# RECORD DISPLAY Voltage
+# Easy M&D
 Project in MAKinteract Lab (Prof. Andrea Bianchi), KAIST (Research Inturnship 2022-23 winter)
 
 - command ```python writeGUI.py```: work GUI that measure voltage

@@ -3,15 +3,23 @@ import time
 import csv
 import sys
 
+
 Pins = [sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8]]
 streaming_frequency = int(sys.argv[9])
 duration = int(sys.argv[10])
 filename = sys.argv[11]
 folderPath = sys.argv[12]
+date = sys.argv[13]
 
 # Pin configure
 selected_pin = [i for i in range(0,len(Pins)) if Pins[i] == 'True']
 print(selected_pin)
+
+# decimal point that check round
+if streaming_frequency >=0 & streaming_frequency <= 3:
+    decimal_point = 3
+elif streaming_frequency >= 4:
+    decimal_point = 4
 
 # Create daq_one object
 daq_one = MagicDAQDevice()
@@ -21,7 +29,7 @@ daq_one.open_daq_device()
 
 start = time.time()
 
-csv_log_file = open(folderPath+'/'+filename+'.csv', 'w+', newline="")
+csv_log_file = open(folderPath+'/'+filename+date+'.csv', 'w+', newline="")
 csv_writer = csv.writer(csv_log_file)
 log_file_header = ['Time (Sec)']
 for l in selected_pin:
@@ -49,7 +57,7 @@ while (time.time() < (test_start_time + (total_test_time_sec * duration)) ):
 daq_one.stop_analog_input_stream()
 
 # Total length of test
-print('Total Test Time (sec): ', round((time.time() - test_start_time),3) )
+print('Total Test Time (sec): ', round((time.time() - test_start_time),decimal_point) )
 
 all_streaming_data = daq_one.get_full_streaming_data_buffer()
 print('Number of data points gathered for each analog input: ', len(all_streaming_data[0]))
@@ -75,5 +83,5 @@ while data_index < min(len(all_streaming_data[0]),len(all_streaming_data[len(sel
     data_index += 1
 
 print('')
-print ('--- Test Complete ---')
+print ('--- Measure Complete ---')
 csv_log_file.close()
