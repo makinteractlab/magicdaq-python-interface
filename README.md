@@ -4,7 +4,7 @@ Project in MAKinteract Lab (Prof. Andrea Bianchi), KAIST (Research Inturnship 20
 # Specifications
 
 # Required
-- MAGICDAQ ((docs)[https://magicdaq.github.io/magicdaq_docs/])
+- MAGICDAQ ([docs](https://magicdaq.github.io/magicdaq_docs/))
 - Oscilloscope (for verification of measurement data)
 - An appropriate circuit (mainly electronic)
 ## Install library
