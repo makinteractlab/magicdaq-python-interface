@@ -1,7 +1,4 @@
 # Easy M&D
-Project in MAKinteract Lab (Prof. Andrea Bianchi), KAIST (Research Inturnship 2022-23 winter)
-
-# Specifications
 
 # Required
 - MAGICDAQ ([docs](https://magicdaq.github.io/magicdaq_docs/))
@@ -55,3 +52,7 @@ Finally, set the filter settings. You can apply a filter to the measured data to
 (Note: If you use filter and the minimum value of voltage is less than 0[V],\n adjust all data so that the minimum value of the data is 0[V]. \nIf you use filter and the maximum value of data is more than 5[V],\n adjust the range of voltages in the data to be 0[V] to 5[V])
 
 After making the above settings, the 'DISPLAY' button can be pressed. You can check the result immediately after clicking. (If the amount of data is large, it may take some time to compile.)
+
+
+## Remarks
+this is project in MAKinteract Lab (Prof. Andrea Bianchi), KAIST (Research Inturnship 2022-23 winter)
