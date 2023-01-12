@@ -279,8 +279,8 @@ class DisplayGUI(QWidget):
 
         # Configure output
         diff = int(height*9/40)
-        self.cb_pin0 = QCheckBox('pin0', self)
-        self.cb_pin1 = QCheckBox('pin1', self)
+        self.cb_pin0 = QCheckBox('AO0', self)
+        self.cb_pin1 = QCheckBox('AO1', self)
         self.cb_pin0.setGeometry(int(width*1/10),int(height*7/20),100,30)
         self.cb_pin1.setGeometry(int(width*1/10),int(height*7/20)+diff,100,30)
         self.setStyleSheet("""
@@ -421,7 +421,7 @@ class DisplayGUI(QWidget):
         self.pin1_listA.clear()
     
     def fetchFile(self):
-        self.path, self.check = QFileDialog.getOpenFileName(None,"Choose a load file","","CSV Files (*.csv);;Text Files (*.txt)")
+        self.path, self.check = QFileDialog.getOpenFileName(None,"Choose a load file","","CSV Files (*.csv)")
         if self.check:
             self.path_text.setText('Path: '+str(self.path))
             self.clearElement()
