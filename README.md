@@ -1,11 +1,7 @@
 # Easy M&D
-Project in MAKinteract Lab (Prof. Andrea Bianchi), KAIST (Research Inturnship 2022-23 winter)
-
-# Specifications
 
 # Required
-- MAGICDAQ ((docs)[
-https://magicdaq.github.io/magicdaq_docs/])
+- MAGICDAQ ([docs](https://magicdaq.github.io/magicdaq_docs/))
 - Oscilloscope (for verification of measurement data)
 - An appropriate circuit (mainly electronic)
 ## Install library
@@ -45,7 +41,7 @@ Next, configure the pins to output: MAGICDAQ has two analog signal outputs (AO0,
 First, decide on the 'Option' parameter. This allows you to set whether the output should be a single data or an arithmetic calculation of two data. You can choose from the following
 - S(single): Outputs a single pin of data. This is the default setting.
 - +(addition): Outputs the sum of the two selected measurement data as a single waveform (a + b).
--(subtraction): performs subtraction using the two selected data and outputs the result as a single waveform (a - b).
+- -(subtraction): performs subtraction using the two selected data and outputs the result as a single waveform (a - b).
 - x(multiplication): Multiply two selected measurement data and output the result as a single waveform (a * b).
 (Note: If a parameter other than S is selected, the possible output range of 0-5[V] may be exceeded. If this happens, adjust the data so that it falls within the outputtable range. Specifically, values below 0[V] should be reset to 0[V] and values above 5[V] should be reset to 5[V]).
 
@@ -53,6 +49,10 @@ Finally, set the filter settings. You can apply a filter to the measured data to
 - None: No filter is applied.
 - Low Pass Filter: Applies a low pass filter using a butter worth filter.
 - High Pass Filter: Applies a high pass filter using a butter worth filter.
-(Note: If you use filter and the minimum value of voltage is less than 0[V],\n adjust all data so that the minimum value of the data is 0[V]. \nIf you use filter and the maximum value of data is more than 5[V],\n adjust the range of voltages in the data to be 0[V] to 5[V])
+(Note: If you use filter and the minimum value of voltage is less than 0[V], adjust all data so that the minimum value of the data is 0[V]. If you use filter and the maximum value of data is more than 5[V], adjust the range of voltages in the data to be 0[V] to 5[V])
 
 After making the above settings, the 'DISPLAY' button can be pressed. You can check the result immediately after clicking. (If the amount of data is large, it may take some time to compile.)
+
+
+## Remarks
+this is project in (MAKinteract Lab)[https://makinteract.kaist.ac.kr/] (Prof. Andrea Bianchi), KAIST (Research Inturnship 2022-23 winter)
