@@ -16,10 +16,7 @@ selected_pin = [i for i in range(0,len(Pins)) if Pins[i] == 'True']
 print(selected_pin)
 
 # decimal point that check round
-if streaming_frequency >=0 & streaming_frequency <= 3:
-    decimal_point = 3
-elif streaming_frequency >= 4:
-    decimal_point = 4
+decimal_point = len(str(streaming_frequency)) + 1
 
 # Create daq_one object
 daq_one = MagicDAQDevice()

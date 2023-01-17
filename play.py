@@ -93,7 +93,7 @@ class WriteGUI(QWidget):
         self.path_text.setGeometry(int(width*3/20), int(height*19/40),400,20)
 
         # save file name
-        self.file_name_text = QLabel('File Name (.csv):', self)
+        self.file_name_text = QLabel('File Name:', self)
         self.file_name_text.setFont(QFont('Arial', 15))
         self.file_name_text.move(int(width*3/20), int(height*21/40))
         self.file_name = QLineEdit(self)
@@ -265,7 +265,7 @@ class DisplayGUI(QWidget):
         self.text1.move(int(width*4/20), int(height*1/20))
 
         # Load voltage data
-        self.loadbtn = QPushButton('Choose a Load File', self)
+        self.loadbtn = QPushButton('Choose a Load File (.csv)', self)
         self.loadbtn.setFont(QFont('Times', 15))
         self.loadbtn.setGeometry(int(width*3/20), int(height*3/20),400, 40)
         self.path_text = QLabel('Load file is not defined.', self)
@@ -278,7 +278,7 @@ class DisplayGUI(QWidget):
         self.option_exp.move(int(width*4/20), int(height*5/20))
 
         # Configure output
-        diff = int(height*9/40)
+        diff = int(height*17/80)
         self.cb_pin0 = QCheckBox('AO0', self)
         self.cb_pin1 = QCheckBox('AO1', self)
         self.cb_pin0.setGeometry(int(width*1/10),int(height*7/20),100,30)
@@ -367,8 +367,8 @@ class DisplayGUI(QWidget):
         self.caution_title.setFont(QFont('Arial', 20, QFont.Bold))
         self.caution_title.setStyleSheet("color: red")
         self.caution_text.setFont(QFont('Arial', 8, QFont.Bold))
-        self.caution_title.move(int(width*2/20), int(height*15/20))
-        self.caution_text.move(int(width*3/20), int(height*16/20))
+        self.caution_title.move(int(width*2/20), int(height*29/40))
+        self.caution_text.move(int(width*3/20), int(height*31/40))
 
 
         

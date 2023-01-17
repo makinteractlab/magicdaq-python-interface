@@ -1,4 +1,5 @@
 # Easy M&D
+This application is designed to simplify voltage measurement and verification of the data using MAGICDAQ.
 
 # Required
 - MAGICDAQ ([docs](https://magicdaq.github.io/magicdaq_docs/))
@@ -17,7 +18,11 @@ The following libraries and others are required. Please complete the installatio
 If you run ```python -m pip list`` and they are installed correctly, you are done. It is recommended to use the latest version of each of them.
 
 # How to use
-To launch the GUI, run ``python play.py``.
+There are two ways of operation: from the **Command Line** and from the **GUI(Graphical User Interface)**. GUI is strongly recommended for first-time users.
+
+# GUI
+To launch the **GUI**, run ``python play.py``.
+
 There are tabs for Measure, Display.
 ## Measure
 Measure: Measure the voltage of the 8 analog input pins of the MAGICDAQ.
@@ -53,5 +58,12 @@ Finally, set the filter settings. You can apply a filter to the measured data to
 
 After making the above settings, the 'DISPLAY' button can be pressed. You can check the result immediately after clicking. (If the amount of data is large, it may take some time to compile.)
 
-## Remarks
+# Command Line
+To use the command line, run ```python command.py```. After this, you will be asked to enter parameters.
+
+
+
+
+
+# Remarks
 This project was held in [MAKinteract Lab](https://makinteract.kaist.ac.kr/) (Research Internship of TokyoTech, winter in 2022-2023)
