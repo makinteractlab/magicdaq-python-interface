@@ -59,11 +59,44 @@ Finally, set the filter settings. You can apply a filter to the measured data to
 After making the above settings, the 'DISPLAY' button can be pressed. You can check the result immediately after clicking. (If the amount of data is large, it may take some time to compile.)
 
 # Command Line
-To use the command line, run ```python command.py```. After this, you will be asked to enter parameters.
+There are two main ways to do this from the command line.
 
+1. **To interact with the command, run ```"python command.py"```.**
+Follow the instructions given in the command.
 
+2. **If you want to execute a command once**, create a command according to the following configuration.
+- ```-m```: measure mode
+    - ```-f 'value(int)'```: frequency(Hz), default:100
+    - ```-t 'value(int)'```: time duration(sec), default: 3
+    - ```-i 'value(int, array)'```: input pins array(format: [0,1,2,3,...]), default: 0 1
+    - ```-l 'value(string)'```: location of folder (path or folder name), default: datas
+    - ```-n 'value(string)'```: file name, default: sample
+- ```-d```: display mode
+    - ```-l 'value(string)'```: location of folder (path or folder name), <span style="color: red; ">necessary</span>
+    - ```-0 'value(single or formula)' 'value(filter)'```: AO0 output pin settings
+    - ```-1 'value(single or formula)' 'value(filter)'```: AO1 output pin settings
 
+**```-m``` or ```-d``` is always required to determine whether measure or display is used.** If this input is missing or both inputs are present, the operation will not execute correctly and will terminate.
+
+Parameters with default values will be executed without input. However, if only key is entered, or if it is not an appropriate value, it will also be treated as a default value. Parameters are entered in no particular order.
+
+Here are two examples.
+
+```python command.py -m -f 250 -n 250Hz```
+would start the measurement with the following settings:
+- frequency:250Hz
+- time duration: 3sec
+- folder: data
+- file name:250Hz
+
+(Caution: In terms of folder, this expression can be used if the corresponding directory exists directly below.)
+
+```python command.py -d -l . \datas\250Hz-2023-01-01-12-00-00.csv -0 0 + 2 none -1 4 high```
+would display data with the following settings:
+- file location: `.\datas\250Hz-2023-01-01-12-00-00.csv`
+- AO0: 'analog input 0' + 'analog input 2', filter(none)
+- AO1; 'analog input 4' filter(high pass filter)
 
 
 # Remarks
-This project was held in [MAKinteract Lab](https://makinteract.kaist.ac.kr/) (Research Internship of TokyoTech, winter in 2022-2023)
+This project was developed during the activities of Research Internship in [MAKinteract Lab](https://makinteract.kaist.ac.kr/), KAIST Republic of Korea(winter in 2022-2023)
