@@ -69,10 +69,11 @@ Follow the instructions given in the command.
     - ```-f 'value(int)'```: frequency(Hz), default:100
     - ```-t 'value(int)'```: time duration(sec), default: 3
     - ```-i 'value(int, array)'```: input pins array(format: [0,1,2,3,...]), default: 0 1
-    - ```-l 'value(string)'```: location of folder (path or folder name), default: datas
-    - ```-n 'value(string)'```: file name, default: sample
+    - ```-folder 'value(string)'```: location of folder (path or folder name), default: datas
+    - ```-file 'value(string)'```: file name, default: sample
+    - ```-v```: view graph, default: False
 - ```-d```: display mode
-    - ```-l 'value(string)'```: location of folder (path or folder name), <span style="color: red; ">necessary</span>
+    - ```-file 'value(string)'```: location of file, <span style="color: red; ">necessary</span>
     - ```-0 'value(single or formula)' 'value(filter)'```: AO0 output pin settings
     - ```-1 'value(single or formula)' 'value(filter)'```: AO1 output pin settings
 
@@ -80,14 +81,17 @@ Follow the instructions given in the command.
 
 Parameters with default values will be executed without input. However, if only key is entered, or if it is not an appropriate value, it will also be treated as a default value. Parameters are entered in no particular order.
 
+The measured data is automatically saved.
+
+### Example
 Here are two examples.
 
 ```python command.py -m -f 250 -n 250Hz```
 would start the measurement with the following settings:
 - frequency:250Hz
 - time duration: 3sec
-- folder: data
-- file name:250Hz
+- folder: 'data'
+- file name: 'sample'
 
 (Caution: In terms of folder, this expression can be used if the corresponding directory exists directly below.)
 

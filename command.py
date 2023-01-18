@@ -11,6 +11,12 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+def judgeNumber(num):
+    for i in range(8):
+        if num == str(i):
+            return True
+    return False
+
 sys_len = len(sys.argv)
 
 # if input is only "python command.py", you can use interaction system in command.
@@ -197,5 +203,102 @@ if sys_len == 1:
         print("ERROR! you must choose m or d.")
         sys.exit()
 
-
 else:
+    measure = '-m' in sys.argv
+    display = '-d' in sys.argv
+    if not ((measure and not display) or (not measure and display)):
+        print("ERROR! you must enter only one of '-m' or '-d'")
+        sys.exit()
+    
+    if measure:
+        #default settings
+        frequency = 250
+        duration = 3
+        folder_path = 'data'
+        file_name = 'sample'
+        pin = [0,1,2,3]
+        view_on = False
+
+        if '-f' in sys.argv:
+            index = sys.argv.index('-f')
+            if index+1 < len(sys.argv) and sys.argv[index+1].isdecimal():
+                frequency = sys.argv[index+1]
+        if '-t' in sys.argv:
+            index = sys.argv.index('-t')
+            if index+1 < len(sys.argv) and sys.argv[index+1].isdecimal():
+                duration = sys.argv[index+1]
+        if '-i' in sys.argv:
+            index = sys.argv.index('-i')
+            pin = []
+            while index+1 < len(sys.argv) and judgeNumber(sys.argv[index+1]):
+                pin.append(int(sys.argv[index+1]))
+                index += 1
+            if len(pin) == 0:
+                pin = [0,1,2,3]
+        if '-folder' in sys.argv:
+            index = sys.argv.index('-folder')
+            if index+1 < len(sys.argv) and os.path.exists(sys.argv[index+1]):
+                folder_path = sys.argv[index+1]
+        if '-file' in sys.argv:
+            index = sys.argv.index('-file')
+            if index+1 < len(sys.argv):
+                file_name = sys.argv[index+1]
+        if '-v' in sys.argv:
+            view_on = True
+
+        Pins = ["0"] * 8
+        for i in range(8):
+            if i in pin:
+                Pins[i] = "True"
+            else :
+                Pins[i] = "False"
+        now = datetime.datetime.fromtimestamp(time.time())
+        date = now.strftime("-%Y-%m-%d-%H-%M-%S")
+        os.system('python write.py '
+                + Pins[0]+' '+Pins[1]+' '+Pins[2]+' '+Pins[3]+' '+Pins[4]+' '+Pins[5]+' '+Pins[6]+' '+Pins[7]+' '
+                + ' '
+                + str(frequency)
+                + ' '
+                + str(duration)
+                + ' '
+                + file_name
+                + ' '
+                + folder_path
+                + ' '
+                + date
+                )
+        
+        if view_on:
+            with open(folder_path+'/' + file_name + date + '.csv') as f:
+                reader = csv.reader(f)
+                header = next(reader)
+                arr = [row for row in reader]
+            data = np.array(np.array(arr)[1:, :]).T
+            '''data: [[time0, time1, ...], [data0_0, data0_1, ...], ...]'''
+
+            col = ["black", "blue", "red", "green", "purple", "yellow", "brown", "pink"]
+            time = data[0].astype(np.float32)
+            fig, ax = plt.subplots()
+            ax.set_xlabel("Time [s]")
+            ax.set_ylabel("Voltage[V]")
+            ax.set_title('Measured Voltage Data')
+            ax.set_xlim([0, float(data[0][-1])])
+            ax.set_ylim([0, 5])
+            ax.grid()
+            for i in range(1,len(data)):
+                ax.plot(time, data[i].astype(np.float32), color=col[i-1], label=header[i])
+            ax.legend(loc=0)
+            fig.tight_layout()
+            plt.show()
+
+    elif display:
+        file_name = ""
+        a,b,c,d,filter0,filter1,option0,option1 = 0,0,0,0,0,0,'0','0'
+        if '-file' in sys.argv:
+            index = sys.argv.index('-file')
+            if index+1 < len(sys.argv):
+                file_name = sys.argv[index+1]
+        if '-0' in sys.argv:
+            index = sys.argv.index('-file')
+            #if index+4 < len(sys.argv):
+                
