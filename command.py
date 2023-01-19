@@ -293,12 +293,67 @@ else:
 
     elif display:
         file_name = ""
-        a,b,c,d,filter0,filter1,option0,option1 = 0,0,0,0,0,0,'0','0'
+        filter_list = ['none', 'low', 'high']
+        option_list = ['+', '-', '*']
+        a,b,c,d,filter0,filter1,option0,option1,ao0,ao1 = 0,0,0,0,0,0,'0','0','False','False'
         if '-file' in sys.argv:
             index = sys.argv.index('-file')
-            if index+1 < len(sys.argv):
+            if index+1 < len(sys.argv) and os.path.isfile(sys.argv[index+1]):
                 file_name = sys.argv[index+1]
+                with open(file_name) as f:
+                    reader = csv.reader(f)
+                    header = reader.__next__()
+                pin_list = [header[i][-1] for i in range(1, len(header))]
+            else:
+                print("ERROR! You must choose a file.")
+                sys.exit()
+        else :
+            print("ERROR! You must choose a file.")
+            sys.exit()
+
         if '-0' in sys.argv:
-            index = sys.argv.index('-file')
-            #if index+4 < len(sys.argv):
-                
+            ao0 = 'True'
+            index = sys.argv.index('-0')
+            if index+2 < len(sys.argv) and sys.argv[index+2] in filter_list:
+                formula = sys.argv[index+1]
+                if len(formula) == 1 and judgeNumber(formula):
+                    a = pin_list.index(sys.argv[index+1])
+                elif len(formula) == 3 and judgeNumber(formula[0]) and judgeNumber(formula[2]) and formula[1] in option_list:
+                    a = pin_list.index(formula[0])
+                    b = pin_list.index(formula[2])
+                    option0 = option_list.index(formula[1])
+                filter0 = filter_list.index(sys.argv[index+2])
+            elif index+1 < len(sys.argv):
+                formula = sys.argv[index+1]
+                if len(formula) == 1 and judgeNumber(formula):
+                    a = pin_list.index(sys.argv[index+1])
+                elif len(formula) == 3 and judgeNumber(formula[0]) and judgeNumber(formula[2]) and formula[1] in option_list:
+                    a = pin_list.index(formula[0])
+                    b = pin_list.index(formula[2])
+                    option0 = option_list.index(formula[1])
+
+        if '-1' in sys.argv:
+            ao1 = 'True'
+            index = sys.argv.index('-1')
+            if index+2 < len(sys.argv) and sys.argv[index+2] in filter_list:
+                formula = sys.argv[index+1]
+                if len(formula) == 1 and judgeNumber(formula):
+                    c = pin_list.index(sys.argv[index+1])
+                elif len(formula) == 3 and judgeNumber(formula[0]) and judgeNumber(formula[2]) and formula[1] in option_list:
+                    c = pin_list.index(formula[0])
+                    d = pin_list.index(formula[2])
+                    option1 = option_list.index(formula[1])
+                filter1 = filter_list.index(sys.argv[index+2])
+            elif index+1 < len(sys.argv):
+                formula = sys.argv[index+1]
+                if len(formula) == 1 and judgeNumber(formula):
+                    c = pin_list.index(sys.argv[index+1])
+                elif len(formula) == 3 and judgeNumber(formula[0]) and judgeNumber(formula[2]) and formula[1] in option_list:
+                    c = pin_list.index(formula[0])
+                    d = pin_list.index(formula[2])
+                    option1 = option_list.index(formula[1])
+
+        os.system("python display.py "+file_name + ' '
+            + ao0 + ' ' + str(a) + ' ' + str(option0)+ ' ' + str(b) + ' ' + str(filter0) + ' '
+            + ao1 + ' ' + str(c) + ' ' + str(option1) + ' ' + str(d) + ' ' + str(filter1)
+            )

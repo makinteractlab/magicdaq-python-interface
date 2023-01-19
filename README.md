@@ -86,7 +86,7 @@ The measured data is automatically saved.
 ### Example
 Here are two examples.
 
-```python command.py -m -f 250 -n 250Hz```
+```python command.py -m -f 250 -file 250Hz```
 would start the measurement with the following settings:
 - frequency:250Hz
 - time duration: 3sec
@@ -95,7 +95,7 @@ would start the measurement with the following settings:
 
 (Caution: In terms of folder, this expression can be used if the corresponding directory exists directly below.)
 
-```python command.py -d -l . \datas\250Hz-2023-01-01-12-00-00.csv -0 0 + 2 none -1 4 high```
+```python command.py -d -file .\datas\250Hz-2023-01-01-12-00-00.csv -0 0+2 none -1 4 high```
 would display data with the following settings:
 - file location: `.\datas\250Hz-2023-01-01-12-00-00.csv`
 - AO0: 'analog input 0' + 'analog input 2', filter(none)
