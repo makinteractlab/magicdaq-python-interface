@@ -131,11 +131,11 @@ if sys_len == 1:
                     if not(a >=0 and a<len(header)):
                         print("ERROR! You must enter the appropriate values.")
                         sys.exit()
-                elif option0 == "a" or option0 == "A" or option0 == "m" or option0 == "M" or option0 == "t" or option0 == "T":
+                elif option0 == "p" or option0 == "P" or option0 == "m" or option0 == "M" or option0 == "t" or option0 == "T":
                     print('Selectable voltage data: ' + header_text)
                     print("The only input value is the numerical value of each index.")
                     print("The inputs are as follows,")
-                    if option0 == "a" or option0 == "A":
+                    if option0 == "p" or option0 == "P":
                         option0 = '1'
                         print("ex) if you want to try '3 + 4', your input is '3 4'")
                     elif option0 == "m" or option0 == "M":
