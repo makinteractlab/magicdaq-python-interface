@@ -68,14 +68,14 @@ Follow the instructions given in the command.
 - ```-m```: measure mode
     - ```-f 'value(int)'```: frequency(Hz), default:100
     - ```-t 'value(int)'```: time duration(sec), default: 3
-    - ```-i 'value(int, array)'```: input pins array(format: [0,1,2,3,...]), default: 0 1
+    - ```-p 'value(int, array)'```: input pins array(format: [0,1,2,3,...]), default: 0 1
     - ```-folder 'value(string)'```: location of folder (path or folder name), default: datas
     - ```-file 'value(string)'```: file name, default: sample
     - ```-v```: view graph, default: False
 - ```-d```: display mode
     - ```-file 'value(string)'```: location of file, <span style="color: red; ">necessary</span>
-    - ```-0 'value(single or formula)' 'value(filter)'```: AO0 output pin settings
-    - ```-1 'value(single or formula)' 'value(filter)'```: AO1 output pin settings
+    - ```-0 'value(single or formula)' 'value(filter)'```: AO0 output pin settings, filter default: none
+    - ```-1 'value(single or formula)' 'value(filter)'```: AO1 output pin settings, filter default: none
 
 **```-m``` or ```-d``` is always required to determine whether measure or display is used.** If this input is missing or both inputs are present, the operation will not execute correctly and will terminate.
 
@@ -90,8 +90,10 @@ Here are two examples.
 would start the measurement with the following settings:
 - frequency:250Hz
 - time duration: 3sec
+- input pin: 0,1,2,3
 - folder: 'data'
 - file name: 'sample'
+- view graph: off
 
 (Caution: In terms of folder, this expression can be used if the corresponding directory exists directly below.)
 

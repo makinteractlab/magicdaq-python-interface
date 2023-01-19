@@ -353,6 +353,10 @@ else:
                     d = pin_list.index(formula[2])
                     option1 = option_list.index(formula[1])
 
+        if not(bool(ao0) and bool(ao1)):
+            print("ERROR! You must choose one pin at least.")
+            sys.exit()
+
         os.system("python display.py "+file_name + ' '
             + ao0 + ' ' + str(a) + ' ' + str(option0)+ ' ' + str(b) + ' ' + str(filter0) + ' '
             + ao1 + ' ' + str(c) + ' ' + str(option1) + ' ' + str(d) + ' ' + str(filter1)

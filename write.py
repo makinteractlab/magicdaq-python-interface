@@ -47,11 +47,11 @@ daq_one.start_analog_input_stream()
 
 while (time.time() < (test_start_time + (total_test_time_sec * duration)) ):
     latest_samples = daq_one.get_last_n_streaming_data_samples(1)
-    print('Will print latest sample in 1 sec.')
-    print('')
+    print('Measurement in progress...')
     time.sleep(1)
 
 daq_one.stop_analog_input_stream()
+print("------  Measurement Stop  ------")
 
 # Total length of test
 print('Total Test Time (sec): ', round((time.time() - test_start_time),decimal_point) )
@@ -80,5 +80,5 @@ while data_index < min(len(all_streaming_data[0]),len(all_streaming_data[len(sel
     data_index += 1
 
 print('')
-print ('--- Measure Complete ---')
+print ('------  Measurement Complete  ------')
 csv_log_file.close()
