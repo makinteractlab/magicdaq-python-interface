@@ -104,8 +104,6 @@ class WriteGUI(QWidget):
         self.measure_btn.setStyleSheet('QPushButton {color:#E06010;}')
         self.measure_btn.setFont(QFont('Times', 27))
         self.measure_btn.setGeometry(int(width*5/20), int(height*12/20), int(width*9/20), 70)
-        self.lamp = QPushButton("Measuring", self)
-        self.lamp.setFont(QFont('Arial',12))
 
         # display measured data and save or not
         self.view_graph = QPushButton('View Graph', self)
