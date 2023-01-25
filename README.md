@@ -30,16 +30,16 @@ To launch the **GUI**, run ``python play.py``.
 There are tabs for Measure, Display.
 ## Measure
 Measure: Measure the voltage of the 8 analog input pins of the MAGICDAQ.
-- frequency: Set the frequency of the measurement.
-- Time Duration: Set the measurement time.
-- The 'Choose File Location' button allows you to specify the directory where the data will be saved.
-- File Name: Specify the name of the file to save. After execution, the date and time will be automatically added to the file name you set and saved. This generates unique data.
+- ``frequency``: Set the frequency of the measurement.
+- ``Time Duration``: Set the measurement time.
+- The ``'Choose File Location'`` button allows you to specify the directory where the data will be saved.
+- ``File Name``: Specify the name of the file to save. After execution, the date and time will be automatically added to the file name you set and saved. This generates unique data.
 Once all necessary variables have been entered, the 'MEASURE' button can be pressed and the measurement can begin.
 
 After the measurement, the measured data can be viewed in the GUI. Click on the 'View Graph' button. After clicking, a graph of the measured data will be displayed in a separate window.
 Finally, you can choose whether or not to save the measured data.
-- Save: Saves the measured data. The file name for saving the data is as shown above.
-- Dismiss: Delete the measurement data.
+- ```Save```: Saves the measured data. The file name for saving the data is as shown above.
+- ```Dismiss```: Delete the measurement data.
 
 Press the 'Save' button or the 'Dismiss' button to take the measurement again.
 
