@@ -1,6 +1,10 @@
 # Easy M&D
 This application is designed to simplify voltage measurement and verification of the data using MAGICDAQ.
 
+The project's introductory video describes how to use it.
+
+[![](https://img.youtube.com/vi/-3C6D1j4X4Y/0.jpg)](https://www.youtube.com/watch?v=-3C6D1j4X4Y)
+
 # Required
 - MAGICDAQ ([docs](https://magicdaq.github.io/magicdaq_docs/))
 - Oscilloscope (for verification of measurement data)
