@@ -19,7 +19,7 @@ The following libraries and others are required. Please complete the installatio
 - scipy
 - matplotlib
 
-If you run ```python -m pip list`` and they are installed correctly, you are done. It is recommended to use the latest version of each of them.
+If you run ``python -m pip list`` and they are installed correctly, you are done. It is recommended to use the latest version of each of them.
 
 # How to use
 There are two ways of operation: from the **Command Line** and from the **GUI(Graphical User Interface)**. GUI is strongly recommended for first-time users.
@@ -48,16 +48,16 @@ You can simulate the measured data using an oscilloscope.
 First select a file to get the data needed for the simulation. Only .csv files can be selected here.
 Next, configure the pins to output: MAGICDAQ has two analog signal outputs (AO0, AO1). After properly connecting each of them to the oscilloscope (we recommend connecting CH1 for AO0 and CH2 for AO1), manipulate the parameters in the GUI. After selecting the checkboxes for the pins you need for output, let's move on to editing the parameters.
 First, decide on the 'Option' parameter. This allows you to set whether the output should be a single data or an arithmetic calculation of two data. You can choose from the following
-- S(single): Outputs a single pin of data. This is the default setting.
-- +(addition): Outputs the sum of the two selected measurement data as a single waveform (a + b).
-- -(subtraction): performs subtraction using the two selected data and outputs the result as a single waveform (a - b).
-- x(multiplication): Multiply two selected measurement data and output the result as a single waveform (a * b).
+- ``S``(single): Outputs a single pin of data. This is the default setting.
+- ``+``(addition): Outputs the sum of the two selected measurement data as a single waveform (a + b).
+- ``-``(subtraction): performs subtraction using the two selected data and outputs the result as a single waveform (a - b).
+- ``x``(multiplication): Multiply two selected measurement data and output the result as a single waveform (a * b).
 (Note: If a parameter other than S is selected, the possible output range of 0-5[V] may be exceeded. If this happens, adjust the data so that it falls within the outputtable range. Specifically, values below 0[V] should be reset to 0[V] and values above 5[V] should be reset to 5[V]).
 
 Finally, set the filter settings. You can apply a filter to the measured data to suppress noise. The contents of the selectable parameters are as follows.
-- None: No filter is applied.
-- Low Pass Filter: Applies a low pass filter using a butter worth filter.
-- High Pass Filter: Applies a high pass filter using a butter worth filter.
+- ``None``: No filter is applied.
+- ``Low Pass Filter``: Applies a low pass filter using a butter worth filter.
+- ``High Pass Filter``: Applies a high pass filter using a butter worth filter.
 (Note: If you use filter and the minimum value of voltage is less than 0[V], adjust all data so that the minimum value of the data is 0[V]. If you use filter and the maximum value of data is more than 5[V], adjust the range of voltages in the data to be 0[V] to 5[V])
 
 After making the above settings, the 'DISPLAY' button can be pressed. You can check the result immediately after clicking. (If the amount of data is large, it may take some time to compile.)
